@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>School Helper</title><link rel="stylesheet" href="/style.css"><script type="module" src="/page.js"></script></head>
+<body><header><span class="mark" aria-hidden="true">✎</span> School Helper</header>
+<main><h1>What feels <em>tricky?</em></h1><p class="intro">Bring a question or a passage from class. Choose how you want it explained.</p>
+<div class="layout"><section><form id="study"><fieldset><legend>How can I help?</legend><div id="modes"></div></fieldset>
+<label for="question" id="prompt">What would you like to understand?</label><textarea id="question" maxlength="20000" required placeholder="Why do particles move faster when they get hotter?"></textarea>
+<div class="actions"><small>Leave out names and personal details.</small><button id="check">Check</button></div></form>
+<section class="answer" aria-live="polite"><h2>Your explanation</h2><p id="result">Your explanation will appear here after you press Check.</p></section></section>
+<aside><h2>Try a practice question</h2><p>Pick one to fill in the worksheet.</p><div id="samples"></div></aside></div></main></body></html>
