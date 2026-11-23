@@ -26,3 +26,12 @@ Try the five styles with classroom questions and review factual accuracy before 
 - The user can provide feedback on explanations to improve AI responses.
 
 The water-cycle practice passage follows [USGS Water Science School](https://www.usgs.gov/special-topics/water-science-school/water-cycle).
+
+## Put School Helper online with Vercel
+
+1. In Vercel, choose **Add New → Project** and import the School-Helper GitHub repository. Keep the project root at the repository root.
+2. Under **Environment Variables**, add `KEYGEN_URL` and `KEYGEN_TOKEN` using your private values. Select **Production** and also **Preview** if preview links should answer questions.
+3. Choose **Deploy**. The repository config serves the page from `public` and sends Check requests to the Node.js function in `api/ask.mjs`. Leave the build settings at their defaults.
+4. Open the deployment link, pick a practice question, and press **Check**. If you change either variable later, redeploy to use the new value.
+
+The server obtains its AI key through getKey(). Saving still uses each browser's local storage.
