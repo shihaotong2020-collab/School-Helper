@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Checked Simpler words with the same question in two styles. For a quick demo, ask “Why do puddles dry up?” using In detail, then select Simpler words and press Check again. The question stays in the box.
+
 Students choose Simpler words, Summary, In detail, Homework hint, or Step by step, then press Check. The server sends middle-school tutoring and safety instructions each time.
 The AI connects through getKey() on the server. Model: gpt-5.6-luna.
 
