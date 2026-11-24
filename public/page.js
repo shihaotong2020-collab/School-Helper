@@ -11,6 +11,7 @@ const form = document.querySelector('#study');
 const question = document.querySelector('#question');
 const check = document.querySelector('#check');
 const result = document.querySelector('#result');
+let previous;
 function select(mode) {
   form.elements.mode.value = mode;
   document.querySelector('#prompt').textContent = styles[mode][1];
@@ -34,18 +35,22 @@ for (const item of state.samples) {
   const mode = document.createElement('small');
   mode.textContent = styles[item.mode][0];
   button.append(title,mode);
-  button.onclick = () => { select(item.mode); question.value = item.question; question.focus(); };
+  button.onclick = () => { if (check.disabled) return; previous = undefined; select(item.mode); question.value = item.question; question.focus(); };
   document.querySelector('#samples').append(button);
 }
 form.onsubmit = async event => {
   event.preventDefault();
   if (check.disabled || !question.value.trim()) return;
+  const submitted = question.value.trim();
   check.disabled = true;
   result.textContent = 'Thinking…';
   try {
     const reply = await fetch('/ask', {method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({mode:form.elements.mode.value,question:question.value.trim()})});
+      body:JSON.stringify({mode:form.elements.mode.value,question:submitted,previous})});
     const data = await reply.json();
+    if (reply.ok && typeof data.answer === 'string') {
+      previous = data.remember === false ? undefined : {question:submitted, answer:data.answer.slice(0,20000)};
+    }
     result.textContent = data.answer ?? data.error;
   } catch { result.textContent = 'Check your internet connection and try again.'; }
   finally { check.disabled = false; }

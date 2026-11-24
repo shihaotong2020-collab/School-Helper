@@ -1,4 +1,4 @@
-import { answer, modes, DisplayError } from '../server/ai.mjs';
+import { answer, hasPersonalDetails, modes, DisplayError } from '../server/ai.mjs';
 
 export default async function ask(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -9,15 +9,22 @@ export default async function ask(req, res) {
     let size = 0;
     for await (const chunk of req) {
       size += chunk.length;
-      if (size > 120000) return res.writeHead(413).end('{"error":"Question is too long."}');
+      if (size > 520000) return res.writeHead(413).end('{"error":"Question is too long."}');
       chunks.push(chunk);
     }
-    let question, mode;
-    try { ({question, mode} = JSON.parse(Buffer.concat(chunks).toString())); } catch {}
+    let question, mode, previous;
+    try { ({question, mode, previous} = JSON.parse(Buffer.concat(chunks).toString())); } catch {}
     if (typeof question !== 'string' || !question.trim() || question.length > 20000 || !Object.hasOwn(modes, mode)) {
       return res.writeHead(400).end('{"error":"Choose a help style and enter up to 20,000 characters."}');
     }
-    res.end(JSON.stringify({ answer: await answer(question, mode) }));
+    if (previous != null && (typeof previous.question !== 'string' || previous.question.length > 20000 ||
+        typeof previous.answer !== 'string' || previous.answer.length > 20000)) {
+      return res.writeHead(400).end('{"error":"Please start a new question."}');
+    }
+    if ([question, previous?.question, previous?.answer].some(text => text && hasPersonalDetails(text))) {
+      return res.end(JSON.stringify({answer:'Please remove personal details such as your address or email, then press Check again.', remember:false}));
+    }
+    res.end(JSON.stringify({ answer: await answer(question, mode, previous) }));
   } catch (error) {
     res.writeHead(502).end(JSON.stringify({ error: error instanceof DisplayError
       ? error.message : 'Check your internet connection and try again.' }));
