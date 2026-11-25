@@ -6,8 +6,6 @@ const styles = {
   detail:['In detail','What school topic would you like to explore?'],
   homework:['Homework hint','Which homework question has you stuck?'],
   steps:['Step by step','Which problem would you like to work through?'],
-  example:['Example','What would you like an example of?'],
-  analogy:['Analogy','What would you like explained with a comparison?'],
 };
 const state = load();
 const form = document.querySelector('#study');
@@ -19,6 +17,8 @@ const continuation = document.querySelector('#continuation');
 const next = document.querySelector('#next');
 const thread = document.querySelector('#thread');
 const status = continuation.querySelector('[role=status]');
+const replies = document.querySelector('#replies');
+const replyStatus = document.querySelector('#reply-status');
 let previous;
 let turns = [];
 const saveButton = document.querySelector('#save-chat');
@@ -55,7 +55,7 @@ loadForm.onsubmit = event => {
     turns.slice(1).forEach(showTurn);
     const last = turns.at(-1);
     previous = {question:last.question, answer:last.answer.slice(0,20000)};
-    follow.hidden = false;
+    replies.hidden = false;
     saveButton.disabled = false;
     chatStatus.textContent = 'Chat loaded. You can ask a follow-up.';
   } catch (error) {
@@ -65,20 +65,22 @@ loadForm.onsubmit = event => {
 function resetThread() {
   previous = undefined;
   turns = [];
+  replyStatus.textContent = '';
   saveButton.disabled = true;
   chatStatus.textContent = '';
   thread.replaceChildren();
-  follow.hidden = true;
+  replies.hidden = true;
   continuation.hidden = true;
   next.value = '';
   status.textContent = '';
 }
 follow.onclick = () => {
-  follow.hidden = true;
+  replies.hidden = true;
   continuation.hidden = false;
   next.focus();
 };
 function select(mode) {
+  if (!Object.hasOwn(styles, mode)) mode = 'simple';
   form.elements.mode.value = mode;
   document.querySelector('#prompt').textContent = styles[mode][1];
   save(mode);
@@ -104,20 +106,18 @@ for (const item of state.samples) {
   button.onclick = () => { if (check.disabled) return; resetThread(); select(item.mode); question.value = item.question; question.focus(); };
   document.querySelector('#samples').append(button);
 }
-async function submit(event) {
-  event.preventDefault();
-  const isFollow = event.currentTarget === continuation;
-  const submitted = (isFollow ? next : question).value.trim();
+async function submit(isFollow, submitted, mode, output) {
   if (check.disabled || !submitted) return;
   if (!isFollow) resetThread();
-  const output = isFollow ? status : result;
+  replyStatus.textContent = '';
+  for (const button of replies.querySelectorAll('button')) button.disabled = true;
   const send = continuation.querySelector('button');
   saveButton.disabled = loadForm.querySelector('button').disabled = true;
   check.disabled = send.disabled = true;
   output.textContent = 'Thinking…';
   try {
     const reply = await fetch('/ask', {method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({mode:form.elements.mode.value,question:submitted,previous})});
+      body:JSON.stringify({mode,question:submitted,previous})});
     const data = await reply.json();
     if (!reply.ok || typeof data.answer !== 'string' || data.remember === false) {
       output.textContent = data.error ?? data.answer ?? 'Please try again.';
@@ -128,21 +128,30 @@ async function submit(event) {
     previous = {question:submitted, answer:turn.answer.slice(0,20000)};
     if (isFollow) {
       showTurn(turn);
+      replyStatus.textContent = '';
       continuation.hidden = true;
       next.value = '';
       status.textContent = '';
     } else {
       result.textContent = turn.answer;
     }
-    follow.hidden = false;
+    replies.hidden = false;
     if (isFollow) follow.focus();
   } catch { output.textContent = 'Check your internet connection and try again.'; }
   finally {
+    for (const button of replies.querySelectorAll('button')) button.disabled = false;
     check.disabled = send.disabled = loadForm.querySelector('button').disabled = false;
     saveButton.disabled = turns.length === 0;
   }
 }
-form.onsubmit = continuation.onsubmit = submit;
+form.onsubmit = continuation.onsubmit = event => {
+  event.preventDefault();
+  const isFollow = event.currentTarget === continuation;
+  submit(isFollow, (isFollow ? next : question).value.trim(), form.elements.mode.value, isFollow ? status : result);
+};
+for (const [mode, prompt] of Object.entries({example:'Give me an example of that.', analogy:'Explain that with an analogy.'})) {
+  document.getElementById(mode).onclick = () => submit(true, prompt, mode, replyStatus);
+}
 
 import {loadLook, saveLook} from './storage.js';
 const panel = document.querySelector('#look');

@@ -16,7 +16,7 @@ Summary accepts a passage of up to 20,000 characters or a concept name. Checked 
 After an answer, click Follow-up to open another question box below it. Press Check to add the reply. Earlier exchanges stay visible and the AI uses the last exchange for context. Refresh or submit a new question in the top box to start again.
 Checked Simpler words with the same question in two styles. For a quick demo, ask “Why do puddles dry up?” using In detail, then select Simpler words and press Check again. The question stays in the box.
 
-Students choose Simpler words, Summary, In detail, Homework hint, Step by step, Example, or Analogy, then press Check. Example shows the idea in action. Analogy compares it with something familiar. Try both with “What is an average?” The server sends middle-school tutoring and safety instructions each time.
+After an answer, click Example or Analogy next to Follow-up. Each button adds a reply to the same chat. Save chat includes all of them. The server sends middle-school tutoring and safety instructions each time.
 The AI connects through getKey() on the server. Model: gpt-5.6-luna.
 
 Saves on this computer only for now. The browser remembers the help style and practice sample titles. Press Save chat to store completed questions and answers in this browser and get a code. Enter the code under Saved chats and press Load chat to continue. Refreshing keeps saved chats. Clearing site data removes them.
