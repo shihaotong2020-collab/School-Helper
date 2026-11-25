@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import ask from '../api/ask.mjs';
 
 const assets = new Map();
-for (const [name, type] of Object.entries({'index.html':'text/html','style.css':'text/css','page.js':'text/javascript','storage.js':'text/javascript'})) {
+for (const [name, type] of Object.entries({'index.html':'text/html','style.css':'text/css','page.js':'text/javascript','storage.js':'text/javascript','math.mjs':'text/javascript'})) {
   assets.set(name === 'index.html' ? '/' : '/' + name, [readFileSync(new URL('../public/' + name, import.meta.url)), type + '; charset=utf-8']);
 }
 

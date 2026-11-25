@@ -1,3 +1,4 @@
+import {plainMath} from './math.mjs';
 import {load, save, loadChat, saveChat} from './storage.js';
 const styles = {
   simple:['Simpler words','What would you like to understand?'],
@@ -45,7 +46,7 @@ loadForm.onsubmit = event => {
   try {
     const chat = loadChat(loadForm.elements.code.value);
     resetThread();
-    turns = chat.turns;
+    turns = chat.turns.map(turn => ({...turn, answer:plainMath(turn.answer)}));
     select(chat.mode);
     question.value = turns[0].question;
     result.textContent = turns[0].answer;
@@ -120,16 +121,16 @@ async function submit(event) {
       output.textContent = data.error ?? data.answer ?? 'Please try again.';
       return;
     }
-    const turn = {question:submitted, answer:data.answer};
+    const turn = {question:submitted, answer:plainMath(data.answer)};
     turns.push(turn);
-    previous = {question:submitted, answer:data.answer.slice(0,20000)};
+    previous = {question:submitted, answer:turn.answer.slice(0,20000)};
     if (isFollow) {
       showTurn(turn);
       continuation.hidden = true;
       next.value = '';
       status.textContent = '';
     } else {
-      result.textContent = data.answer;
+      result.textContent = turn.answer;
     }
     follow.hidden = false;
     if (isFollow) follow.focus();
