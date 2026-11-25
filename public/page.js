@@ -1,5 +1,5 @@
 import {plainMath} from './math.mjs';
-import {load, save, loadChat, saveChat, loadFavorites, saveFavorite, removeFavorite} from './storage.js';
+import {load, save, loadChat, saveChat, loadFavorites, saveFavorite, removeFavorite, reportReasons, saveReport, loadReports} from './storage.js';
 const styles = {
   simple:['Simpler words','What would you like to understand?'],
   summary:['Summary','Paste your text or name a concept to summarize.'],
@@ -72,7 +72,7 @@ function renderFavorites() {
           chatStatus.textContent = 'Removed from favorites.';
         } catch { chatStatus.textContent = 'Could not remove this favorite in your browser.'; }
       };
-      entry.append(title, body, remove);
+      entry.append(title, body, remove, reportControl(item));
       list.append(entry);
     }
   } catch { list.textContent = 'Favorites could not be opened in this browser.'; }
@@ -96,6 +96,50 @@ function favoriteButton(turn) {
   return button;
 }
 renderFavorites();
+function renderReports() {
+  const list = document.querySelector('#reports');
+  list.replaceChildren();
+  try {
+    const reports = loadReports();
+    if (!reports.length) list.textContent = 'No reports on this device.';
+    for (const report of reports) {
+      const entry = document.createElement('details');
+      const heading = document.createElement('summary');
+      heading.textContent = report.reason + ' · ' + new Date(report.time).toLocaleString();
+      const body = document.createElement('p');
+      body.textContent = report.answer ?? 'Reply text omitted for privacy.';
+      entry.append(heading, body);
+      list.append(entry);
+    }
+  } catch { list.textContent = 'Reports could not be opened.'; }
+}
+function reportControl(turn) {
+  const panel = document.createElement('details');
+  const toggle = document.createElement('summary');
+  toggle.textContent = 'Report response';
+  const reason = document.createElement('select');
+  reason.setAttribute('aria-label', 'Reason for reporting');
+  reason.add(new Option('Choose a reason', ''));
+  for (const name of reportReasons) reason.add(new Option(name, name));
+  const send = document.createElement('button');
+  send.type = 'button';
+  send.textContent = 'Save report on this device';
+  send.disabled = true;
+  reason.onchange = () => { send.disabled = !reason.value; };
+  const message = document.createElement('span');
+  message.setAttribute('role', 'status');
+  send.onclick = () => {
+    try {
+      saveReport(reason.value, turn.answer);
+      send.disabled = reason.disabled = true;
+      message.textContent = ' Report saved. You can show it to a trusted adult in Safety reports.';
+      renderReports();
+    } catch { message.textContent = ' Could not save this report. You can show the reply to a trusted adult.'; }
+  };
+  panel.append(toggle, reason, send, message);
+  return panel;
+}
+renderReports();
 function showTurn(turn) {
   const exchange = document.createElement('section');
   exchange.className = 'answer';
@@ -103,7 +147,7 @@ function showTurn(turn) {
   heading.textContent = turn.question;
   const paragraph = document.createElement('p');
   paragraph.textContent = turn.answer;
-  exchange.append(heading, paragraph, favoriteButton(turn));
+  exchange.append(heading, paragraph, favoriteButton(turn), reportControl(turn));
   thread.append(exchange);
 }
 saveButton.onclick = () => {
@@ -124,7 +168,7 @@ loadForm.onsubmit = event => {
     select(chat.mode);
     question.value = turns[0].question;
     result.textContent = turns[0].answer;
-    firstFavorite.replaceChildren(favoriteButton(turns[0]));
+    firstFavorite.replaceChildren(favoriteButton(turns[0]), reportControl(turns[0]));
     turns.slice(1).forEach(showTurn);
     const last = turns.at(-1);
     previous = {question:last.question, answer:last.answer.slice(0,20000)};
@@ -287,7 +331,7 @@ async function submit(isFollow, submitted, mode, output) {
       status.textContent = '';
     } else {
       result.textContent = turn.answer;
-      firstFavorite.replaceChildren(favoriteButton(turn));
+      firstFavorite.replaceChildren(favoriteButton(turn), reportControl(turn));
     }
     replies.hidden = false;
     if (mode === 'quiz') openQuizAnswer();

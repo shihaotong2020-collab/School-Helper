@@ -77,3 +77,15 @@ export function removeFavorite({question, answer}) {
   const remaining = loadFavorites().filter(item => item.question !== question || item.answer !== answer);
   localStorage.setItem(favoritesKey, JSON.stringify(remaining));
 }
+
+export const reportReasons = ['Unsafe advice', 'Hurtful or inappropriate language', 'Personal information', 'Other safety concern'];
+const reportKey = 'school-helper-safety-reports';
+export function loadReports() {
+  return JSON.parse(localStorage.getItem(reportKey) ?? '[]');
+}
+export function saveReport(reason, answer) {
+  if (!reportReasons.includes(reason)) throw new Error('Choose a report reason.');
+  const record = {reason, time:Date.now()};
+  if (reason !== 'Personal information' && !hasPersonalDetails({question:'', answer})) record.answer = answer;
+  localStorage.setItem(reportKey, JSON.stringify([record, ...loadReports()]));
+}

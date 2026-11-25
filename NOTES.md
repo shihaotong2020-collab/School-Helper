@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Use Report response to choose a reason and save a local safety report. Open Safety reports in the same browser to review it with a trusted adult. Reports exclude student questions and omit reply text for privacy reports or detected personal details. Nobody is notified automatically.
+
 Use Save to favorites under an explanation. Open its question in Favorites to read it again in this browser. Choose Remove from favorites inside the entry to unmark it. The explanation stays in its chat.
 Click Quiz me after an explanation for one practice question on the same topic. Type your attempt in the box directly below the quiz question and press Check for feedback. The box also opens when you load an unanswered quiz. The quiz and feedback stay in the chat.
 
@@ -41,7 +43,7 @@ Try the help styles with classroom questions and review factual accuracy before 
 
 
 
-- The user can report inappropriate responses from the AI to ensure safety.
+
 - The user can receive reminders not to share personal information.
 - The user can ask for related topics to expand their understanding.
 - The user can provide feedback on explanations to improve AI responses.
