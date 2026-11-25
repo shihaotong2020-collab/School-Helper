@@ -109,6 +109,11 @@ function renderReports() {
       const body = document.createElement('p');
       body.textContent = report.answer ?? 'Reply text omitted for privacy.';
       entry.append(heading, body);
+      if (report.note) {
+        const note = document.createElement('p');
+        note.textContent = 'Your concern: ' + report.note;
+        entry.append(note);
+      }
       list.append(entry);
     }
   } catch { list.textContent = 'Reports could not be opened.'; }
@@ -125,18 +130,31 @@ function reportControl(turn) {
   send.type = 'button';
   send.textContent = 'Save report on this device';
   send.disabled = true;
-  reason.onchange = () => { send.disabled = !reason.value; };
+  const label = document.createElement('label');
+  label.hidden = true;
+  label.textContent = 'Describe your concern (optional). Leave out names and contact details.';
+  const note = document.createElement('textarea');
+  note.maxLength = 500;
+  label.append(note);
+  reason.onchange = () => {
+    send.disabled = !reason.value;
+    label.hidden = reason.value !== 'Other safety concern';
+    message.textContent = '';
+    if (!label.hidden) note.focus();
+  };
   const message = document.createElement('span');
   message.setAttribute('role', 'status');
   send.onclick = () => {
     try {
-      saveReport(reason.value, turn.answer);
-      send.disabled = reason.disabled = true;
+      saveReport(reason.value, turn.answer, note.value);
+      send.disabled = reason.disabled = note.disabled = true;
       message.textContent = ' Report saved. You can show it to a trusted adult in Safety reports.';
       renderReports();
-    } catch { message.textContent = ' Could not save this report. You can show the reply to a trusted adult.'; }
+    } catch (error) {
+      message.textContent = error instanceof RangeError ? error.message : ' Could not save this report. You can show the reply to a trusted adult.';
+    }
   };
-  panel.append(toggle, reason, send, message);
+  panel.append(toggle, reason, label, send, message);
   return panel;
 }
 renderReports();

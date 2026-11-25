@@ -83,9 +83,14 @@ const reportKey = 'school-helper-safety-reports';
 export function loadReports() {
   return JSON.parse(localStorage.getItem(reportKey) ?? '[]');
 }
-export function saveReport(reason, answer) {
+export function saveReport(reason, answer, note = '') {
   if (!reportReasons.includes(reason)) throw new Error('Choose a report reason.');
   const record = {reason, time:Date.now()};
+  if (reason === 'Other safety concern' && note.trim()) {
+    if (note.length > 500) throw new RangeError('Please keep your concern to 500 characters.');
+    if (hasPersonalDetails({question:note, answer:''})) throw new RangeError('Remove personal details from your note before saving.');
+    record.note = note.trim();
+  }
   if (reason !== 'Personal information' && !hasPersonalDetails({question:'', answer})) record.answer = answer;
   localStorage.setItem(reportKey, JSON.stringify([record, ...loadReports()]));
 }
