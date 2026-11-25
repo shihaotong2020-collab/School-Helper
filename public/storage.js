@@ -72,3 +72,8 @@ export function saveFavorite({question, answer}) {
   if (items.some(item => item.question === question && item.answer === answer)) return;
   localStorage.setItem(favoritesKey, JSON.stringify([{question, answer}, ...items]));
 }
+
+export function removeFavorite({question, answer}) {
+  const remaining = loadFavorites().filter(item => item.question !== question || item.answer !== answer);
+  localStorage.setItem(favoritesKey, JSON.stringify(remaining));
+}

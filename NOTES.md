@@ -3,7 +3,7 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
-Use Save to favorites under an explanation. Open its question in Favorites to read it again in this browser.
+Use Save to favorites under an explanation. Open its question in Favorites to read it again in this browser. Choose Remove from favorites inside the entry to unmark it. The explanation stays in its chat.
 Click Quiz me after an explanation for one practice question on the same topic. Type your attempt in the box directly below the quiz question and press Check for feedback. The box also opens when you load an unanswered quiz. The quiz and feedback stay in the chat.
 
 Choose from five starter topics in each of five school subjects to fill in an editable question. Press Check to start it, or leave the picker empty and write your own question.

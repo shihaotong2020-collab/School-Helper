@@ -1,5 +1,5 @@
 import {plainMath} from './math.mjs';
-import {load, save, loadChat, saveChat, loadFavorites, saveFavorite} from './storage.js';
+import {load, save, loadChat, saveChat, loadFavorites, saveFavorite, removeFavorite} from './storage.js';
 const styles = {
   simple:['Simpler words','What would you like to understand?'],
   summary:['Summary','Paste your text or name a concept to summarize.'],
@@ -43,11 +43,18 @@ const saveButton = document.querySelector('#save-chat');
 const loadForm = document.querySelector('#load-chat');
 const chatStatus = document.querySelector('#chat-status');
 const firstFavorite = document.querySelector('#first-favorite');
+const buttonTurns = new WeakMap();
+function syncFavoriteButton(button, items) {
+  const turn = buttonTurns.get(button);
+  button.disabled = items.some(item => item.question === turn.question && item.answer === turn.answer);
+  button.textContent = button.disabled ? 'Saved to favorites' : 'Save to favorites';
+}
 function renderFavorites() {
   const list = document.querySelector('#favorites');
   list.replaceChildren();
   try {
     const items = loadFavorites();
+    for (const button of document.querySelectorAll('.favorite-save')) syncFavoriteButton(button, items);
     if (!items.length) list.textContent = 'Your saved explanations will appear here.';
     for (const item of items) {
       const entry = document.createElement('details');
@@ -55,7 +62,17 @@ function renderFavorites() {
       title.textContent = item.question;
       const body = document.createElement('p');
       body.textContent = item.answer;
-      entry.append(title, body);
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = 'Remove from favorites';
+      remove.onclick = () => {
+        try {
+          removeFavorite(item);
+          renderFavorites();
+          chatStatus.textContent = 'Removed from favorites.';
+        } catch { chatStatus.textContent = 'Could not remove this favorite in your browser.'; }
+      };
+      entry.append(title, body, remove);
       list.append(entry);
     }
   } catch { list.textContent = 'Favorites could not be opened in this browser.'; }
@@ -63,8 +80,9 @@ function renderFavorites() {
 function favoriteButton(turn) {
   const button = document.createElement('button');
   button.type = 'button';
-  button.className = 'submit';
-  button.textContent = 'Save to favorites';
+  button.className = 'submit favorite-save';
+  buttonTurns.set(button, turn);
+  try { syncFavoriteButton(button, loadFavorites()); } catch { button.textContent = 'Save to favorites'; }
   button.onclick = () => {
     try {
       saveFavorite(turn);
