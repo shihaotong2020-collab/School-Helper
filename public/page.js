@@ -6,6 +6,8 @@ const styles = {
   detail:['In detail','What school topic would you like to explore?'],
   homework:['Homework hint','Which homework question has you stuck?'],
   steps:['Step by step','Which problem would you like to work through?'],
+  example:['Example','What would you like an example of?'],
+  analogy:['Analogy','What would you like explained with a comparison?'],
 };
 const state = load();
 const form = document.querySelector('#study');

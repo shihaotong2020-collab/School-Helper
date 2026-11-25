@@ -7,6 +7,8 @@ export const modes = {
   detail: 'Explain the school concept in depth, in short connected parts.',
   homework: 'Coach this homework question with one useful hint and a question for the student.',
   steps: 'Give numbered steps for the method. Leave the final calculation or assignment to the student.',
+  example: 'Give one concrete example of the idea, then explain how it shows the idea. For homework, demonstrate the method on a different problem and invite the student to try their own.',
+  analogy: 'Compare the idea to something familiar. Explain which parts match, and mention a limit if the comparison could mislead. For homework, use the comparison as a hint and leave the assigned answer to the student.',
 };
 
 const instructions = `You are School Helper, a friendly tutor for grades 6–8. Answer only school and learning questions.

@@ -16,7 +16,7 @@ Summary accepts a passage of up to 20,000 characters or a concept name. Checked 
 After an answer, click Follow-up to open another question box below it. Press Check to add the reply. Earlier exchanges stay visible and the AI uses the last exchange for context. Refresh or submit a new question in the top box to start again.
 Checked Simpler words with the same question in two styles. For a quick demo, ask “Why do puddles dry up?” using In detail, then select Simpler words and press Check again. The question stays in the box.
 
-Students choose Simpler words, Summary, In detail, Homework hint, or Step by step, then press Check. The server sends middle-school tutoring and safety instructions each time.
+Students choose Simpler words, Summary, In detail, Homework hint, Step by step, Example, or Analogy, then press Check. Example shows the idea in action. Analogy compares it with something familiar. Try both with “What is an average?” The server sends middle-school tutoring and safety instructions each time.
 The AI connects through getKey() on the server. Model: gpt-5.6-luna.
 
 Saves on this computer only for now. The browser remembers the help style and practice sample titles. Press Save chat to store completed questions and answers in this browser and get a code. Enter the code under Saved chats and press Load chat to continue. Refreshing keeps saved chats. Clearing site data removes them.
@@ -24,10 +24,9 @@ Saves on this computer only for now. The browser remembers the help style and pr
 After each save point, push it to GitHub.
 
 ## Next
-Try the five styles with classroom questions and review factual accuracy before recording the demo.
+Try the help styles with classroom questions and review factual accuracy before recording the demo.
 
 ## Maybe Later
-- The user can request explanations in different ways, like examples or analogies.
 - The user can get hints instead of direct answers to encourage learning.
 - The user can ask the AI to clarify confusing terms or jargon.
 - The user can choose a topic from a list of common subjects.
