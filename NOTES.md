@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Checked Step by step with “How do I add 1/3 and 1/4?” The AI gave five numbered steps, showed how to rewrite both fractions in twelfths, and left the numerator for the student to calculate.
+
 Checked Homework hint with a rectangle whose perimeter is 34 cm and length is 10 cm. The AI used both numbers to set up the equation and left the final calculation to the student.
 
 All help styles request readable math such as 1/2 = 2/4 and explain the letters in formulas. The page also cleans up common math formatting in earlier saved answers. Tested with “Why do equivalent fractions have the same value?” The answer showed how splitting each half into two quarters keeps the amount the same.
