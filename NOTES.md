@@ -5,7 +5,7 @@ Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 ## Done
 Summary accepts a passage of up to 20,000 characters or a concept name. Checked with a 19,238-character classroom observation log and the single word “Photosynthesis”. Both produced short summaries of the main ideas.
 
-After an answer, replace the question and press Check to follow up. The page remembers the last exchange until you refresh or choose a practice question.
+After an answer, click Follow-up to open another question box below it. Press Check to add the reply. Earlier exchanges stay visible and the AI uses the last exchange for context. Refresh or submit a new question in the top box to start again.
 Checked Simpler words with the same question in two styles. For a quick demo, ask “Why do puddles dry up?” using In detail, then select Simpler words and press Check again. The question stays in the box.
 
 Students choose Simpler words, Summary, In detail, Homework hint, or Step by step, then press Check. The server sends middle-school tutoring and safety instructions each time.

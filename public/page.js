@@ -11,7 +11,25 @@ const form = document.querySelector('#study');
 const question = document.querySelector('#question');
 const check = document.querySelector('#check');
 const result = document.querySelector('#result');
+const follow = document.querySelector('#follow');
+const continuation = document.querySelector('#continuation');
+const next = document.querySelector('#next');
+const thread = document.querySelector('#thread');
+const status = continuation.querySelector('[role=status]');
 let previous;
+function resetThread() {
+  previous = undefined;
+  thread.replaceChildren();
+  follow.hidden = true;
+  continuation.hidden = true;
+  next.value = '';
+  status.textContent = '';
+}
+follow.onclick = () => {
+  follow.hidden = true;
+  continuation.hidden = false;
+  next.focus();
+};
 function select(mode) {
   form.elements.mode.value = mode;
   document.querySelector('#prompt').textContent = styles[mode][1];
@@ -35,23 +53,46 @@ for (const item of state.samples) {
   const mode = document.createElement('small');
   mode.textContent = styles[item.mode][0];
   button.append(title,mode);
-  button.onclick = () => { if (check.disabled) return; previous = undefined; select(item.mode); question.value = item.question; question.focus(); };
+  button.onclick = () => { if (check.disabled) return; resetThread(); select(item.mode); question.value = item.question; question.focus(); };
   document.querySelector('#samples').append(button);
 }
-form.onsubmit = async event => {
+async function submit(event) {
   event.preventDefault();
-  if (check.disabled || !question.value.trim()) return;
-  const submitted = question.value.trim();
-  check.disabled = true;
-  result.textContent = 'Thinking…';
+  const isFollow = event.currentTarget === continuation;
+  const submitted = (isFollow ? next : question).value.trim();
+  if (check.disabled || !submitted) return;
+  if (!isFollow) resetThread();
+  const output = isFollow ? status : result;
+  const send = continuation.querySelector('button');
+  check.disabled = send.disabled = true;
+  output.textContent = 'Thinking…';
   try {
     const reply = await fetch('/ask', {method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({mode:form.elements.mode.value,question:submitted,previous})});
     const data = await reply.json();
-    if (reply.ok && typeof data.answer === 'string') {
-      previous = data.remember === false ? undefined : {question:submitted, answer:data.answer.slice(0,20000)};
+    if (!reply.ok || typeof data.answer !== 'string' || data.remember === false) {
+      output.textContent = data.error ?? data.answer ?? 'Please try again.';
+      return;
     }
-    result.textContent = data.answer ?? data.error;
-  } catch { result.textContent = 'Check your internet connection and try again.'; }
-  finally { check.disabled = false; }
-};
+    previous = {question:submitted, answer:data.answer.slice(0,20000)};
+    if (isFollow) {
+      const exchange = document.createElement('section');
+      exchange.className = 'answer';
+      const heading = document.createElement('h2');
+      heading.textContent = submitted;
+      const paragraph = document.createElement('p');
+      paragraph.textContent = data.answer;
+      exchange.append(heading, paragraph);
+      thread.append(exchange);
+      continuation.hidden = true;
+      next.value = '';
+      status.textContent = '';
+    } else {
+      result.textContent = data.answer;
+    }
+    follow.hidden = false;
+    if (isFollow) follow.focus();
+  } catch { output.textContent = 'Check your internet connection and try again.'; }
+  finally { check.disabled = send.disabled = false; }
+}
+form.onsubmit = continuation.onsubmit = submit;
