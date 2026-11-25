@@ -2,6 +2,7 @@ import { getKey, rejectKey, DisplayError } from './keys.mjs';
 export { getKey, DisplayError };
 
 export const modes = {
+  clarify: 'Identify the school term in the student message and use the previous exchange to choose its meaning. Define it in one short sentence using everyday words, then give one simple example if helpful. If the meaning is still ambiguous, ask which subject or sentence they mean. If asked to finish homework, explain the term and leave the assigned answer to the student.',
   simple: 'Explain in simpler words. Use two or three short sentences.',
   summary: 'Summarize the supplied text or concept in up to three clear points. Preserve its meaning.',
   detail: 'Explain the school concept in depth, in short connected parts.',

@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Click Clarify a term under an answer, type a confusing word or phrase, and press Check. The explanation uses the current topic and stays in the chat when saved.
+
 Choose Homework hint before asking a question, or click Get a hint under a reply for one more clue. Repeated hints keep the original problem, the latest student-written progress, and recent exchanges in view, including after loading a saved chat. Each clue stays in the chat and can be saved with it.
 
 Checked Step by step with “How do I add 1/3 and 1/4?” The AI gave five numbered steps, showed how to rewrite both fractions in twelfths, and left the numerator for the student to calculate.
@@ -30,7 +32,7 @@ Try the help styles with classroom questions and review factual accuracy before 
 
 ## Maybe Later
 
-- The user can ask the AI to clarify confusing terms or jargon.
+
 - The user can choose a topic from a list of common subjects.
 - The user can learn through interactive quizzes based on their questions.
 - The user can save their favorite explanations for future reference.

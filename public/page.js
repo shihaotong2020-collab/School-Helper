@@ -85,11 +85,17 @@ function resetThread() {
   next.value = '';
   status.textContent = '';
 }
-follow.onclick = () => {
+const clarify = document.querySelector('#clarify');
+let clarifying = false;
+function openReply(askForTerm) {
+  clarifying = askForTerm;
+  continuation.querySelector('label').textContent = clarifying ? 'Which word or phrase is confusing?' : 'Your follow-up question';
   replies.hidden = true;
   continuation.hidden = false;
   next.focus();
-};
+}
+follow.onclick = () => openReply(false);
+clarify.onclick = () => openReply(true);
 function select(mode) {
   if (!Object.hasOwn(styles, mode)) mode = 'simple';
   form.elements.mode.value = mode;
@@ -158,7 +164,7 @@ async function submit(isFollow, submitted, mode, output) {
 form.onsubmit = continuation.onsubmit = event => {
   event.preventDefault();
   const isFollow = event.currentTarget === continuation;
-  submit(isFollow, (isFollow ? next : question).value.trim(), form.elements.mode.value, isFollow ? status : result);
+  submit(isFollow, (isFollow ? next : question).value.trim(), isFollow && clarifying ? 'clarify' : form.elements.mode.value, isFollow ? status : result);
 };
 for (const [mode, prompt] of Object.entries(quickReplies)) {
   document.getElementById(mode).onclick = () => submit(true, prompt, mode, replyStatus);
