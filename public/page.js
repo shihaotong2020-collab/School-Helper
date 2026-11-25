@@ -19,6 +19,17 @@ const thread = document.querySelector('#thread');
 const status = continuation.querySelector('[role=status]');
 const replies = document.querySelector('#replies');
 const replyStatus = document.querySelector('#reply-status');
+// Keep the original assignment and the latest student-written progress even after many hint clicks.
+const quickReplies = {homework:'Give me one more hint for this problem.', example:'Give me an example of that.', analogy:'Explain that with an analogy.'};
+function hintHistory(turns) {
+  const progress = turns.findLastIndex(turn => !Object.values(quickReplies).includes(turn.question));
+  const indices = new Set([0, progress, turns.length - 1].filter(i => i >= 0 && i < turns.length));
+  for (let i = turns.length - 2; i >= 0 && indices.size < 12; i--) indices.add(i);
+  return [...indices].sort((a,b) => a-b).map(i => ({
+    question: turns[i].question.slice(0, i === 0 || i === progress ? 20000 : 1000),
+    answer: turns[i].answer.slice(0, 2000),
+  }));
+}
 let previous;
 let turns = [];
 const saveButton = document.querySelector('#save-chat');
@@ -117,7 +128,7 @@ async function submit(isFollow, submitted, mode, output) {
   output.textContent = 'Thinking…';
   try {
     const reply = await fetch('/ask', {method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({mode,question:submitted,previous})});
+      body:JSON.stringify({mode,question:submitted, ...(isFollow && mode === 'homework' ? {history:hintHistory(turns)} : {previous})})});
     const data = await reply.json();
     if (!reply.ok || typeof data.answer !== 'string' || data.remember === false) {
       output.textContent = data.error ?? data.answer ?? 'Please try again.';
@@ -149,7 +160,7 @@ form.onsubmit = continuation.onsubmit = event => {
   const isFollow = event.currentTarget === continuation;
   submit(isFollow, (isFollow ? next : question).value.trim(), form.elements.mode.value, isFollow ? status : result);
 };
-for (const [mode, prompt] of Object.entries({homework:'Give me one more hint for this problem.', example:'Give me an example of that.', analogy:'Explain that with an analogy.'})) {
+for (const [mode, prompt] of Object.entries(quickReplies)) {
   document.getElementById(mode).onclick = () => submit(true, prompt, mode, replyStatus);
 }
 

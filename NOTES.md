@@ -3,7 +3,7 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
-Choose Homework hint before asking a question, or click Get a hint under a reply for one more clue. Each clue stays in the chat and can be saved with it.
+Choose Homework hint before asking a question, or click Get a hint under a reply for one more clue. Repeated hints keep the original problem, the latest student-written progress, and recent exchanges in view, including after loading a saved chat. Each clue stays in the chat and can be saved with it.
 
 Checked Step by step with “How do I add 1/3 and 1/4?” The AI gave five numbered steps, showed how to rewrite both fractions in twelfths, and left the numerator for the student to calculate.
 
