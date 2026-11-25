@@ -141,3 +141,36 @@ async function submit(event) {
   }
 }
 form.onsubmit = continuation.onsubmit = submit;
+
+import {loadLook, saveLook} from './storage.js';
+const panel = document.querySelector('#look');
+const toggle = document.querySelector('#customize');
+const choices = [...panel.querySelectorAll('select')];
+const layout = document.querySelector('.layout');
+const sidebar = layout.querySelector('aside');
+function applyLook() {
+  for (const choice of choices) document.body.dataset[choice.name] = choice.value;
+  if (document.body.dataset.side === 'before') layout.prepend(sidebar);
+  else layout.append(sidebar);
+  sidebar.prepend(document.querySelector(document.body.dataset.first === 'chats' ? '#chats' : '#practice'));
+}
+function rememberLook() {
+  applyLook();
+  saveLook(Object.fromEntries(choices.map(choice => [choice.name, choice.value])));
+}
+const savedLook = loadLook();
+for (const choice of choices) {
+  if ([...choice.options].some(option => option.value === savedLook[choice.name])) {
+    choice.value = savedLook[choice.name];
+  }
+  choice.onchange = rememberLook;
+}
+applyLook();
+toggle.onclick = () => {
+  panel.hidden = !panel.hidden;
+  toggle.setAttribute('aria-expanded', String(!panel.hidden));
+};
+document.querySelector('#reset-look').onclick = () => {
+  for (const choice of choices) choice.selectedIndex = 0;
+  rememberLook();
+};

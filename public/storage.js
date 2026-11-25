@@ -48,3 +48,11 @@ export function loadChat(input) {
   }
   return chat;
 }
+
+export function loadLook() {
+  try { return JSON.parse(localStorage.getItem('school-helper-look')) ?? {}; }
+  catch { return {}; }
+}
+export function saveLook(look) {
+  try { localStorage.setItem('school-helper-look', JSON.stringify(look)); } catch {}
+}

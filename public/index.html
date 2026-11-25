@@ -1,12 +1,19 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>School Helper</title><link rel="stylesheet" href="/style.css"><script type="module" src="/page.js"></script></head>
-<body><header><span class="mark" aria-hidden="true">✎</span> School Helper</header>
-<main><h1>What feels <em>tricky?</em></h1><p class="intro">Bring a question or a passage from class. Choose how you want it explained.</p>
+<body><header><span class="mark" aria-hidden="true">✎</span> School Helper<button id="customize" aria-expanded="false" aria-controls="look">Customize look</button></header>
+<main><section id="look" hidden aria-label="Customize look">
+<h2>Customize look</h2><div class="choices">
+<label>Background<select name="background"><option value="sage">Soft sage</option><option value="sky">Sky blue</option><option value="rose">Pale rose</option><option value="cream">Warm cream</option></select></label>
+<label>Cards<select name="cards"><option value="original">White and sage</option><option value="blue">Mist blue</option><option value="peach">Soft peach</option><option value="lilac">Light lilac</option></select></label>
+<label>Buttons<select name="accent"><option value="teal">Deep teal</option><option value="navy">Ocean blue</option><option value="plum">Plum</option><option value="rust">Brick red</option></select></label>
+<label>Practice and saved chats<select name="side"><option value="after">After worksheet</option><option value="before">Before worksheet</option></select></label>
+<label>Top sidebar section<select name="first"><option value="practice">Practice questions</option><option value="chats">Saved chats</option></select></label>
+</div><button id="reset-look">Reset look</button></section><h1>What feels <em>tricky?</em></h1><p class="intro">Bring a question or a passage from class. Choose how you want it explained.</p>
 <div class="layout"><section><form id="study"><fieldset><legend>How can I help?</legend><div id="modes"></div></fieldset>
 <label for="question" id="prompt">What would you like to understand?</label><textarea id="question" maxlength="20000" required placeholder="Why do particles move faster when they get hotter?"></textarea>
 <div class="actions"><small>Leave out names and personal details.</small><button id="check">Check</button></div></form>
 <section class="answer" aria-live="polite"><h2>Your explanation</h2><p id="result">Your explanation will appear here after you press Check.</p></section>
 <div id="thread"></div><button id="follow" type="button" hidden>Follow-up</button>
 <form id="continuation" hidden><label for="next">Your follow-up question</label><textarea id="next" required maxlength="20000"></textarea><button class="submit">Check</button><p role="status"></p></form></section>
-<aside><h2>Try a practice question</h2><p>Pick one to fill in the worksheet.</p><div id="samples"></div><hr><h2>Saved chats</h2><p>Codes work in this browser on this computer.</p>
+<aside><section id="practice"><h2>Try a practice question</h2><p>Pick one to fill in the worksheet.</p><div id="samples"></div></section><section id="chats"><h2>Saved chats</h2><p>Codes work in this browser on this computer.</p>
 <button id="save-chat" disabled>Save chat</button>
-<form id="load-chat"><label for="code">Save code</label><input id="code" name="code" required autocomplete="off" spellcheck="false"><button>Load chat</button></form><p id="chat-status" role="status"></p></aside></div></main></body></html>
+<form id="load-chat"><label for="code">Save code</label><input id="code" name="code" required autocomplete="off" spellcheck="false"><button>Load chat</button></form><p id="chat-status" role="status"></p></section></aside></div></main></body></html>

@@ -48,3 +48,5 @@ The water-cycle practice passage follows [USGS Water Science School](https://www
 4. Open the deployment link, pick a practice question, and press **Check**. If you change either variable later, redeploy to use the new value.
 
 The server obtains its AI key through getKey(). Saving still uses each browser's local storage.
+
+Customize look lets students choose background, card, and button colors, move the sidebar before or after the worksheet, and put either sidebar section first. Preferences stay in this browser. Reset look restores the original layout and colors.
