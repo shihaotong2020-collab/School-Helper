@@ -134,11 +134,41 @@ for (const [value, [name]] of Object.entries(styles)) {
 }
 select(state.mode);
 const subjects = {
-  Math: [['Fractions','How do I compare two fractions?'],['Equations','How do I keep an equation balanced?']],
-  Science: [['Forces','How does friction affect motion?'],['Ecosystems','How does energy move through a food web?']],
-  'English language arts': [['Theme','How can I find the theme of a story?'],['Persuasive writing','What makes evidence support a claim?']],
-  'Social studies': [['Primary sources','How can a diary help us understand history?'],['Geography','How do rivers affect where cities grow?']],
-  Art: [['Perspective','How do artists show distance on a flat page?'],['Color','What are complementary colors?']],
+  "Math": [
+    ["Fractions","How do I compare two fractions?"],
+    ["Equations","How do I keep an equation balanced?"],
+    ["Ratios","How can a ratio help me scale a recipe?"],
+    ["Percentages","How do I find a percent of a number?"],
+    ["Area","How can I find the area of an L-shaped room?"],
+  ],
+  "Science": [
+    ["Forces","How does friction affect motion?"],
+    ["Ecosystems","How does energy move through a food web?"],
+    ["Moon phases","Why does the Moon look different throughout the month?"],
+    ["Circuits","Why does a bulb need a complete circuit to light up?"],
+    ["States of matter","What happens to water particles when ice melts?"],
+  ],
+  "English language arts": [
+    ["Theme","How can I find the theme of a story?"],
+    ["Persuasive writing","What makes evidence support a claim?"],
+    ["Point of view","How does the narrator change what I know about a story?"],
+    ["Metaphors","How can I tell when a writer is using a metaphor?"],
+    ["Paragraphs","How do I choose details that support my topic sentence?"],
+  ],
+  "Social studies": [
+    ["Primary sources","How can a diary help us understand history?"],
+    ["Geography","How do rivers affect where cities grow?"],
+    ["Trade","Why did trading towns grow along busy routes?"],
+    ["Civics","How do local governments decide which services to provide?"],
+    ["Historical timelines","How can a timeline help me understand a historical event?"],
+  ],
+  "Art": [
+    ["Perspective","How do artists show distance on a flat page?"],
+    ["Color","What are complementary colors?"],
+    ["Shading","How can shading make a circle look like a sphere?"],
+    ["Texture","How can I draw a surface so it looks rough?"],
+    ["Composition","How can an artist draw attention to one part of a picture?"],
+  ],
 };
 const subject = document.querySelector('#subject');
 const topic = document.querySelector('#topic');

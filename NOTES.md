@@ -3,7 +3,7 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
-Choose a school subject and a starter topic to fill in an editable question. Press Check to start it, or leave the picker empty and write your own question.
+Choose from five starter topics in each of five school subjects to fill in an editable question. Press Check to start it, or leave the picker empty and write your own question.
 
 Click Clarify a term under an answer, highlight a confusing word or phrase in any answer (or type it), and press Check. The explanation uses the current topic and stays in the chat when saved.
 
