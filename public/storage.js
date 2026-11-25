@@ -17,3 +17,34 @@ export function load() {
   save(mode);
   return {mode, samples};
 }
+
+const chatPrefix = 'school-helper-chat:';
+export function saveChat(turns, mode) {
+  if (!turns.length) throw new Error('Ask a question before saving.');
+  const personal = /\b(?:my (?:home )?address is|i live at)\b|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b\d{1,6}\s+(?:[\w.-]+\s+){1,4}(?:street|road|avenue|lane|drive|blvd|st|rd)\b/i;
+  if (turns.some(turn => personal.test(turn.question) || personal.test(turn.answer))) {
+    throw new Error('This chat looks like it contains personal details. Start a new chat without them.');
+  }
+  try {
+    let code;
+    do {
+      code = crypto.randomUUID().slice(0,8).toUpperCase();
+    } while (localStorage.getItem(chatPrefix + code) !== null);
+    localStorage.setItem(chatPrefix + code, JSON.stringify({mode, turns}));
+    return code;
+  } catch {
+    throw new Error('Could not save. Your browser storage may be full or turned off.');
+  }
+}
+export function loadChat(input) {
+  const code = input.trim().toUpperCase();
+  let chat;
+  try {
+    if (/^[A-F0-9]{8}$/.test(code)) chat = JSON.parse(localStorage.getItem(chatPrefix + code));
+  } catch {}
+  if (!allowed.includes(chat?.mode) || !Array.isArray(chat.turns) || !chat.turns.length ||
+      !chat.turns.every(turn => typeof turn?.question === 'string' && typeof turn.answer === 'string')) {
+    throw new Error('No saved chat found. Check the code and use the same browser.');
+  }
+  return chat;
+}

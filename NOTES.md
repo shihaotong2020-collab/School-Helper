@@ -13,7 +13,7 @@ Checked Simpler words with the same question in two styles. For a quick demo, as
 Students choose Simpler words, Summary, In detail, Homework hint, or Step by step, then press Check. The server sends middle-school tutoring and safety instructions each time.
 The AI connects through getKey() on the server. Model: gpt-5.6-luna.
 
-Saves on this computer only for now. The browser remembers the help style and practice sample titles. Questions and answers are never written to browser storage.
+Saves on this computer only for now. The browser remembers the help style and practice sample titles. Press Save chat to store completed questions and answers in this browser and get a code. Enter the code under Saved chats and press Load chat to continue. Refreshing keeps saved chats. Clearing site data removes them.
 
 After each save point, push it to GitHub.
 
