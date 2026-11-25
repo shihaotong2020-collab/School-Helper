@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Checked In detail with “Why do we have seasons on Earth?” The live answer connected Earth’s tilt to sunlight angle and day length, then explained why the two hemispheres have opposite seasons.
+
 Summary accepts a passage of up to 20,000 characters or a concept name. Checked with a 19,238-character classroom observation log and the single word “Photosynthesis”. Both produced short summaries of the main ideas.
 
 After an answer, click Follow-up to open another question box below it. Press Check to add the reply. Earlier exchanges stay visible and the AI uses the last exchange for context. Refresh or submit a new question in the top box to start again.
