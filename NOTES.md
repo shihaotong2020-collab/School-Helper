@@ -3,7 +3,7 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
-Click Clarify a term under an answer, type a confusing word or phrase, and press Check. The explanation uses the current topic and stays in the chat when saved.
+Click Clarify a term under an answer, highlight a confusing word or phrase in any answer (or type it), and press Check. The explanation uses the current topic and stays in the chat when saved.
 
 Choose Homework hint before asking a question, or click Get a hint under a reply for one more clue. Repeated hints keep the original problem, the latest student-written progress, and recent exchanges in view, including after loading a saved chat. Each clue stays in the chat and can be saved with it.
 

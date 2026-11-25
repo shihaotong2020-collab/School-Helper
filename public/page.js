@@ -87,9 +87,29 @@ function resetThread() {
 }
 const clarify = document.querySelector('#clarify');
 let clarifying = false;
+let selectedContext;
+function captureTerm() {
+  if (!clarifying || continuation.hidden || check.disabled) return;
+  const selection = window.getSelection();
+  if (!selection.rangeCount || selection.isCollapsed) return;
+  const range = selection.getRangeAt(0);
+  const node = range.commonAncestorContainer;
+  const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+  const answerText = element.closest?.('.answer p');
+  const term = selection.toString().trim();
+  if (!answerText || !term || term.length > next.maxLength) return;
+  const index = answerText === result ? 0 : Array.from(thread.children).indexOf(answerText.closest('.answer')) + 1;
+  const turn = turns[index];
+  if (!turn) return;
+  selectedContext = {question:turn.question, answer:turn.answer.slice(0,20000)};
+  next.value = term;
+}
+document.addEventListener('selectionchange', captureTerm);
+next.addEventListener('input', () => { selectedContext = undefined; });
 function openReply(askForTerm) {
   clarifying = askForTerm;
-  continuation.querySelector('label').textContent = clarifying ? 'Which word or phrase is confusing?' : 'Your follow-up question';
+  selectedContext = undefined;
+  continuation.querySelector('label').textContent = clarifying ? 'Highlight a word or phrase in any answer above, or type it here. Then press Check.' : 'Your follow-up question';
   replies.hidden = true;
   continuation.hidden = false;
   next.focus();
@@ -134,7 +154,7 @@ async function submit(isFollow, submitted, mode, output) {
   output.textContent = 'Thinking…';
   try {
     const reply = await fetch('/ask', {method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({mode,question:submitted, ...(isFollow && mode === 'homework' ? {history:hintHistory(turns)} : {previous})})});
+      body:JSON.stringify({mode,question:submitted, ...(isFollow && mode === 'homework' ? {history:hintHistory(turns)} : {previous:mode === 'clarify' ? selectedContext ?? previous : previous})})});
     const data = await reply.json();
     if (!reply.ok || typeof data.answer !== 'string' || data.remember === false) {
       output.textContent = data.error ?? data.answer ?? 'Please try again.';
