@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+In detail uses readable math such as 1/2 = 2/4. Tested with “Why do equivalent fractions have the same value?” The answer showed how splitting each half into two quarters keeps the amount the same.
+
 Checked In detail with “Why do we have seasons on Earth?” The live answer connected Earth’s tilt to sunlight angle and day length, then explained why the two hemispheres have opposite seasons.
 
 Summary accepts a passage of up to 20,000 characters or a concept name. Checked with a 19,238-character classroom observation log and the single word “Photosynthesis”. Both produced short summaries of the main ideas.

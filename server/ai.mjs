@@ -4,7 +4,7 @@ export { getKey, DisplayError };
 export const modes = {
   simple: 'Explain in simpler words. Use two or three short sentences.',
   summary: 'Summarize the supplied text or concept in up to three clear points. Preserve its meaning.',
-  detail: 'Explain the school concept in depth, in short connected parts.',
+  detail: 'Explain the school concept in depth, in short connected parts. Write math as ordinary keyboard text, such as 1/2 = 2/4. Do not use LaTeX or Markdown formatting.',
   homework: 'Coach this homework question with one useful hint and a question for the student.',
   steps: 'Give numbered steps for the method. Leave the final calculation or assignment to the student.',
 };
