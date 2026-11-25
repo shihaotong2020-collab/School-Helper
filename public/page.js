@@ -133,6 +133,26 @@ for (const [value, [name]] of Object.entries(styles)) {
   document.querySelector('#modes').append(label);
 }
 select(state.mode);
+const subjects = {
+  Math: [['Fractions','How do I compare two fractions?'],['Equations','How do I keep an equation balanced?']],
+  Science: [['Forces','How does friction affect motion?'],['Ecosystems','How does energy move through a food web?']],
+  'English language arts': [['Theme','How can I find the theme of a story?'],['Persuasive writing','What makes evidence support a claim?']],
+  'Social studies': [['Primary sources','How can a diary help us understand history?'],['Geography','How do rivers affect where cities grow?']],
+  Art: [['Perspective','How do artists show distance on a flat page?'],['Color','What are complementary colors?']],
+};
+const subject = document.querySelector('#subject');
+const topic = document.querySelector('#topic');
+for (const name of Object.keys(subjects)) subject.add(new Option(name, name));
+subject.onchange = () => {
+  topic.replaceChildren(new Option('Choose a topic', ''));
+  for (const [label, prompt] of subjects[subject.value] ?? []) topic.add(new Option(label, prompt));
+  document.querySelector('#topic-field').hidden = !subject.value;
+};
+topic.onchange = () => {
+  if (!topic.value) return;
+  question.value = topic.value;
+  question.focus();
+};
 for (const item of state.samples) {
   const button = document.createElement('button');
   const title = document.createElement('strong');

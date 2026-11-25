@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Choose a school subject and a starter topic to fill in an editable question. Press Check to start it, or leave the picker empty and write your own question.
+
 Click Clarify a term under an answer, highlight a confusing word or phrase in any answer (or type it), and press Check. The explanation uses the current topic and stays in the chat when saved.
 
 Choose Homework hint before asking a question, or click Get a hint under a reply for one more clue. Repeated hints keep the original problem, the latest student-written progress, and recent exchanges in view, including after loading a saved chat. Each clue stays in the chat and can be saved with it.
@@ -33,7 +35,7 @@ Try the help styles with classroom questions and review factual accuracy before 
 ## Maybe Later
 
 
-- The user can choose a topic from a list of common subjects.
+
 - The user can learn through interactive quizzes based on their questions.
 - The user can save their favorite explanations for future reference.
 - The user can report inappropriate responses from the AI to ensure safety.
