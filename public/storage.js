@@ -18,9 +18,12 @@ export function load() {
   return {mode, samples};
 }
 
-function hasPersonalDetails(turn) {
+export function looksPersonal(text) {
   const personal = /\b(?:my (?:home )?address is|i live at)\b|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b\d{1,6}\s+(?:[\w.-]+\s+){1,4}(?:street|road|avenue|lane|drive|blvd|st|rd)\b/i;
-  return personal.test(turn.question) || personal.test(turn.answer);
+  return personal.test(text);
+}
+function hasPersonalDetails(turn) {
+  return looksPersonal(turn.question) || looksPersonal(turn.answer);
 }
 
 const chatPrefix = 'school-helper-chat:';

@@ -1,5 +1,5 @@
 import {plainMath} from './math.mjs';
-import {load, save, loadChat, saveChat, loadFavorites, saveFavorite, removeFavorite, reportReasons, saveReport, loadReports} from './storage.js';
+import {load, save, loadChat, saveChat, loadFavorites, saveFavorite, removeFavorite, reportReasons, saveReport, loadReports, looksPersonal} from './storage.js';
 const styles = {
   simple:['Simpler words','What would you like to understand?'],
   summary:['Summary','Paste your text or name a concept to summarize.'],
@@ -132,7 +132,7 @@ function reportControl(turn) {
   send.disabled = true;
   const label = document.createElement('label');
   label.hidden = true;
-  label.textContent = 'Describe your concern (optional). Leave out names and contact details.';
+  label.textContent = 'Describe your concern (optional). Leave out your full name, home address, email, and phone number.';
   const note = document.createElement('textarea');
   note.maxLength = 500;
   label.append(note);
@@ -322,6 +322,16 @@ for (const item of state.samples) {
 }
 async function submit(isFollow, submitted, mode, output) {
   if (check.disabled || !submitted) return;
+  if (looksPersonal(submitted)) {
+    const field = isFollow ? next : question;
+    const reminder = document.getElementById(field.getAttribute('aria-describedby'));
+    const original = reminder.dataset.original ?? reminder.textContent;
+    reminder.dataset.original = original;
+    field.oninput = () => { reminder.textContent = original; field.oninput = null; };
+    reminder.textContent = 'Please remove personal details such as your address or email, then press Check again.';
+    field.focus();
+    return;
+  }
   if (!isFollow) resetThread();
   replyStatus.textContent = '';
   for (const button of replies.querySelectorAll('button')) button.disabled = true;

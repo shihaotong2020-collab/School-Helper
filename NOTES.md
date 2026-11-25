@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Privacy reminders appear beside questions, follow-ups, quiz answers, and report notes. A likely address or email prompts the student to edit before sending a question. Report notes use the same check before saving.
+
 Use Report response to choose a reason and save a local safety report. Other safety concern includes an optional note (up to 500 characters). Open Safety reports in the same browser to review it with a trusted adult. Reports exclude student questions and omit reply text for privacy reports or detected personal details. Nobody is notified automatically.
 
 Use Save to favorites under an explanation. Open its question in Favorites to read it again in this browser. Choose Remove from favorites inside the entry to unmark it. The explanation stays in its chat.
@@ -44,7 +46,6 @@ Try the help styles with classroom questions and review factual accuracy before 
 
 
 
-- The user can receive reminders not to share personal information.
 - The user can ask for related topics to expand their understanding.
 - The user can provide feedback on explanations to improve AI responses.
 
