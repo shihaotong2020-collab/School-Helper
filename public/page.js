@@ -32,13 +32,13 @@ function hintHistory(turns) {
 }
 let previous;
 let turns = [];
-const answerQuiz = document.querySelector('#answer-quiz');
 let answeringQuiz = false;
-answerQuiz.onclick = () => {
+function openQuizAnswer() {
   openReply(false);
   answeringQuiz = true;
   continuation.querySelector('label').textContent = 'Your answer to the quiz question';
-};
+  replies.hidden = false;
+}
 const saveButton = document.querySelector('#save-chat');
 const loadForm = document.querySelector('#load-chat');
 const chatStatus = document.querySelector('#chat-status');
@@ -72,9 +72,9 @@ loadForm.onsubmit = event => {
     result.textContent = turns[0].answer;
     turns.slice(1).forEach(showTurn);
     const last = turns.at(-1);
-    answerQuiz.hidden = last.mode !== 'quiz';
     previous = {question:last.question, answer:last.answer.slice(0,20000)};
     replies.hidden = false;
+    if (last.mode === 'quiz') openQuizAnswer();
     saveButton.disabled = false;
     chatStatus.textContent = 'Chat loaded. You can ask a follow-up.';
   } catch (error) {
@@ -221,7 +221,6 @@ async function submit(isFollow, submitted, mode, output) {
     }
     const turn = {question:submitted, answer:plainMath(data.answer)};
     if (mode === 'quiz') turn.mode = 'quiz';
-    answerQuiz.hidden = mode !== 'quiz';
     turns.push(turn);
     previous = {question:submitted, answer:turn.answer.slice(0,20000)};
     if (isFollow) {
@@ -234,7 +233,8 @@ async function submit(isFollow, submitted, mode, output) {
       result.textContent = turn.answer;
     }
     replies.hidden = false;
-    if (isFollow) follow.focus();
+    if (mode === 'quiz') openQuizAnswer();
+    else if (isFollow) follow.focus();
   } catch { output.textContent = 'Check your internet connection and try again.'; }
   finally {
     for (const button of replies.querySelectorAll('button')) button.disabled = false;
