@@ -2,6 +2,8 @@ import { getKey, rejectKey, DisplayError } from './keys.mjs';
 export { getKey, DisplayError };
 
 export const modes = {
+  quiz: 'Ask one short, answerable practice question about the school concept in the conversation. Use a new example, especially for homework. Do not include the answer. For unsafe or off-topic content, redirect to a safe school topic.',
+  quizFeedback: 'Compare the student attempt to the practice question in the previous assistant message. If correct, say why briefly. If incorrect or incomplete, point out one thing to reconsider and offer a useful hint without giving away the answer. Follow the usual safety rules.',
   clarify: 'Identify the school term in the student message and use the previous exchange to choose its meaning. Define it in one short sentence using everyday words, then give one simple example if helpful. If the meaning is still ambiguous, ask which subject or sentence they mean. If asked to finish homework, explain the term and leave the assigned answer to the student.',
   simple: 'Explain in simpler words. Use two or three short sentences.',
   summary: 'Summarize the supplied text or concept in up to three clear points. Preserve its meaning.',

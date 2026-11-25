@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Click Quiz me after an explanation for one practice question on the same topic. Click Answer quiz, type your attempt, and press Check for feedback. The quiz and feedback stay in the chat.
+
 Choose from five starter topics in each of five school subjects to fill in an editable question. Press Check to start it, or leave the picker empty and write your own question.
 
 Click Clarify a term under an answer, highlight a confusing word or phrase in any answer (or type it), and press Check. The explanation uses the current topic and stays in the chat when saved.
@@ -36,7 +38,7 @@ Try the help styles with classroom questions and review factual accuracy before 
 
 
 
-- The user can learn through interactive quizzes based on their questions.
+
 - The user can save their favorite explanations for future reference.
 - The user can report inappropriate responses from the AI to ensure safety.
 - The user can receive reminders not to share personal information.

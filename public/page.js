@@ -20,7 +20,7 @@ const status = continuation.querySelector('[role=status]');
 const replies = document.querySelector('#replies');
 const replyStatus = document.querySelector('#reply-status');
 // Keep the original assignment and the latest student-written progress even after many hint clicks.
-const quickReplies = {homework:'Give me one more hint for this problem.', example:'Give me an example of that.', analogy:'Explain that with an analogy.'};
+const quickReplies = {quiz:'Quiz me on this topic.', homework:'Give me one more hint for this problem.', example:'Give me an example of that.', analogy:'Explain that with an analogy.'};
 function hintHistory(turns) {
   const progress = turns.findLastIndex(turn => !Object.values(quickReplies).includes(turn.question));
   const indices = new Set([0, progress, turns.length - 1].filter(i => i >= 0 && i < turns.length));
@@ -32,6 +32,13 @@ function hintHistory(turns) {
 }
 let previous;
 let turns = [];
+const answerQuiz = document.querySelector('#answer-quiz');
+let answeringQuiz = false;
+answerQuiz.onclick = () => {
+  openReply(false);
+  answeringQuiz = true;
+  continuation.querySelector('label').textContent = 'Your answer to the quiz question';
+};
 const saveButton = document.querySelector('#save-chat');
 const loadForm = document.querySelector('#load-chat');
 const chatStatus = document.querySelector('#chat-status');
@@ -65,6 +72,7 @@ loadForm.onsubmit = event => {
     result.textContent = turns[0].answer;
     turns.slice(1).forEach(showTurn);
     const last = turns.at(-1);
+    answerQuiz.hidden = last.mode !== 'quiz';
     previous = {question:last.question, answer:last.answer.slice(0,20000)};
     replies.hidden = false;
     saveButton.disabled = false;
@@ -107,6 +115,7 @@ function captureTerm() {
 document.addEventListener('selectionchange', captureTerm);
 next.addEventListener('input', () => { selectedContext = undefined; });
 function openReply(askForTerm) {
+  answeringQuiz = false;
   clarifying = askForTerm;
   selectedContext = undefined;
   continuation.querySelector('label').textContent = clarifying ? 'Highlight a word or phrase in any answer above, or type it here. Then press Check.' : 'Your follow-up question';
@@ -211,6 +220,8 @@ async function submit(isFollow, submitted, mode, output) {
       return;
     }
     const turn = {question:submitted, answer:plainMath(data.answer)};
+    if (mode === 'quiz') turn.mode = 'quiz';
+    answerQuiz.hidden = mode !== 'quiz';
     turns.push(turn);
     previous = {question:submitted, answer:turn.answer.slice(0,20000)};
     if (isFollow) {
@@ -234,7 +245,7 @@ async function submit(isFollow, submitted, mode, output) {
 form.onsubmit = continuation.onsubmit = event => {
   event.preventDefault();
   const isFollow = event.currentTarget === continuation;
-  submit(isFollow, (isFollow ? next : question).value.trim(), isFollow && clarifying ? 'clarify' : form.elements.mode.value, isFollow ? status : result);
+  submit(isFollow, (isFollow ? next : question).value.trim(), isFollow && answeringQuiz ? 'quizFeedback' : isFollow && clarifying ? 'clarify' : form.elements.mode.value, isFollow ? status : result);
 };
 for (const [mode, prompt] of Object.entries(quickReplies)) {
   document.getElementById(mode).onclick = () => submit(true, prompt, mode, replyStatus);
