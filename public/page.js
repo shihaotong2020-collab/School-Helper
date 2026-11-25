@@ -1,5 +1,5 @@
 import {plainMath} from './math.mjs';
-import {load, save, loadChat, saveChat} from './storage.js';
+import {load, save, loadChat, saveChat, loadFavorites, saveFavorite} from './storage.js';
 const styles = {
   simple:['Simpler words','What would you like to understand?'],
   summary:['Summary','Paste your text or name a concept to summarize.'],
@@ -42,6 +42,42 @@ function openQuizAnswer() {
 const saveButton = document.querySelector('#save-chat');
 const loadForm = document.querySelector('#load-chat');
 const chatStatus = document.querySelector('#chat-status');
+const firstFavorite = document.querySelector('#first-favorite');
+function renderFavorites() {
+  const list = document.querySelector('#favorites');
+  list.replaceChildren();
+  try {
+    const items = loadFavorites();
+    if (!items.length) list.textContent = 'Your saved explanations will appear here.';
+    for (const item of items) {
+      const entry = document.createElement('details');
+      const title = document.createElement('summary');
+      title.textContent = item.question;
+      const body = document.createElement('p');
+      body.textContent = item.answer;
+      entry.append(title, body);
+      list.append(entry);
+    }
+  } catch { list.textContent = 'Favorites could not be opened in this browser.'; }
+}
+function favoriteButton(turn) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'submit';
+  button.textContent = 'Save to favorites';
+  button.onclick = () => {
+    try {
+      saveFavorite(turn);
+      button.textContent = 'Saved to favorites';
+      button.disabled = true;
+      renderFavorites();
+    } catch (error) {
+      chatStatus.textContent = error.message.startsWith('Remove personal details') ? error.message : 'Could not save this favorite in your browser.';
+    }
+  };
+  return button;
+}
+renderFavorites();
 function showTurn(turn) {
   const exchange = document.createElement('section');
   exchange.className = 'answer';
@@ -49,7 +85,7 @@ function showTurn(turn) {
   heading.textContent = turn.question;
   const paragraph = document.createElement('p');
   paragraph.textContent = turn.answer;
-  exchange.append(heading, paragraph);
+  exchange.append(heading, paragraph, favoriteButton(turn));
   thread.append(exchange);
 }
 saveButton.onclick = () => {
@@ -70,6 +106,7 @@ loadForm.onsubmit = event => {
     select(chat.mode);
     question.value = turns[0].question;
     result.textContent = turns[0].answer;
+    firstFavorite.replaceChildren(favoriteButton(turns[0]));
     turns.slice(1).forEach(showTurn);
     const last = turns.at(-1);
     previous = {question:last.question, answer:last.answer.slice(0,20000)};
@@ -82,6 +119,7 @@ loadForm.onsubmit = event => {
   }
 };
 function resetThread() {
+  firstFavorite.replaceChildren();
   previous = undefined;
   turns = [];
   replyStatus.textContent = '';
@@ -231,6 +269,7 @@ async function submit(isFollow, submitted, mode, output) {
       status.textContent = '';
     } else {
       result.textContent = turn.answer;
+      firstFavorite.replaceChildren(favoriteButton(turn));
     }
     replies.hidden = false;
     if (mode === 'quiz') openQuizAnswer();

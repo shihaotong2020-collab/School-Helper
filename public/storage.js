@@ -18,11 +18,15 @@ export function load() {
   return {mode, samples};
 }
 
+function hasPersonalDetails(turn) {
+  const personal = /\b(?:my (?:home )?address is|i live at)\b|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b\d{1,6}\s+(?:[\w.-]+\s+){1,4}(?:street|road|avenue|lane|drive|blvd|st|rd)\b/i;
+  return personal.test(turn.question) || personal.test(turn.answer);
+}
+
 const chatPrefix = 'school-helper-chat:';
 export function saveChat(turns, mode) {
   if (!turns.length) throw new Error('Ask a question before saving.');
-  const personal = /\b(?:my (?:home )?address is|i live at)\b|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b\d{1,6}\s+(?:[\w.-]+\s+){1,4}(?:street|road|avenue|lane|drive|blvd|st|rd)\b/i;
-  if (turns.some(turn => personal.test(turn.question) || personal.test(turn.answer))) {
+  if (turns.some(hasPersonalDetails)) {
     throw new Error('This chat looks like it contains personal details. Start a new chat without them.');
   }
   try {
@@ -55,4 +59,16 @@ export function loadLook() {
 }
 export function saveLook(look) {
   try { localStorage.setItem('school-helper-look', JSON.stringify(look)); } catch {}
+}
+
+const favoritesKey = 'school-helper-favorites';
+export function loadFavorites() {
+  const items = JSON.parse(localStorage.getItem(favoritesKey) ?? '[]');
+  return items.filter(item => typeof item?.question === 'string' && typeof item.answer === 'string');
+}
+export function saveFavorite({question, answer}) {
+  if (hasPersonalDetails({question, answer})) throw new Error('Remove personal details before saving an explanation.');
+  const items = loadFavorites();
+  if (items.some(item => item.question === question && item.answer === answer)) return;
+  localStorage.setItem(favoritesKey, JSON.stringify([{question, answer}, ...items]));
 }

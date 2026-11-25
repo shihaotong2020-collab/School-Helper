@@ -3,6 +3,7 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Use Save to favorites under an explanation. Open its question in Favorites to read it again in this browser.
 Click Quiz me after an explanation for one practice question on the same topic. Type your attempt in the box directly below the quiz question and press Check for feedback. The box also opens when you load an unanswered quiz. The quiz and feedback stay in the chat.
 
 Choose from five starter topics in each of five school subjects to fill in an editable question. Press Check to start it, or leave the picker empty and write your own question.
@@ -39,7 +40,7 @@ Try the help styles with classroom questions and review factual accuracy before 
 
 
 
-- The user can save their favorite explanations for future reference.
+
 - The user can report inappropriate responses from the AI to ensure safety.
 - The user can receive reminders not to share personal information.
 - The user can ask for related topics to expand their understanding.
