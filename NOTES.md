@@ -3,6 +3,8 @@
 Start with `node --env-file=.env server/app.mjs` and open http://127.0.0.1:3000.
 
 ## Done
+Choose Homework hint before asking a question, or click Get a hint under a reply for one more clue. Each clue stays in the chat and can be saved with it.
+
 Checked Step by step with “How do I add 1/3 and 1/4?” The AI gave five numbered steps, showed how to rewrite both fractions in twelfths, and left the numerator for the student to calculate.
 
 Checked Homework hint with a rectangle whose perimeter is 34 cm and length is 10 cm. The AI used both numbers to set up the equation and left the final calculation to the student.
@@ -27,7 +29,7 @@ After each save point, push it to GitHub.
 Try the help styles with classroom questions and review factual accuracy before recording the demo.
 
 ## Maybe Later
-- The user can get hints instead of direct answers to encourage learning.
+
 - The user can ask the AI to clarify confusing terms or jargon.
 - The user can choose a topic from a list of common subjects.
 - The user can learn through interactive quizzes based on their questions.

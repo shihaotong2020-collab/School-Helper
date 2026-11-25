@@ -5,7 +5,7 @@ export const modes = {
   simple: 'Explain in simpler words. Use two or three short sentences.',
   summary: 'Summarize the supplied text or concept in up to three clear points. Preserve its meaning.',
   detail: 'Explain the school concept in depth, in short connected parts.',
-  homework: 'Coach this homework question with one useful hint and a question for the student.',
+  homework: 'Give one short clue and a question the student can try. When asked for another hint, build on the previous clue with a different observation or smaller step. Leave the final answer and assignment to the student even if they ask directly. For unsafe or off-topic requests, follow the safety and topic rules instead.',
   steps: 'Give numbered steps for the method. Leave the final calculation or assignment to the student.',
   example: 'Give one concrete example of the idea, then explain how it shows the idea. For homework, demonstrate the method on a different problem and invite the student to try their own.',
   analogy: 'Compare the idea to something familiar. Explain which parts match, and mention a limit if the comparison could mislead. For homework, use the comparison as a hint and leave the assigned answer to the student.',

@@ -149,7 +149,7 @@ form.onsubmit = continuation.onsubmit = event => {
   const isFollow = event.currentTarget === continuation;
   submit(isFollow, (isFollow ? next : question).value.trim(), form.elements.mode.value, isFollow ? status : result);
 };
-for (const [mode, prompt] of Object.entries({example:'Give me an example of that.', analogy:'Explain that with an analogy.'})) {
+for (const [mode, prompt] of Object.entries({homework:'Give me one more hint for this problem.', example:'Give me an example of that.', analogy:'Explain that with an analogy.'})) {
   document.getElementById(mode).onclick = () => submit(true, prompt, mode, replyStatus);
 }
 
